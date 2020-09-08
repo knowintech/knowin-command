@@ -1,0 +1,3 @@
+rootProject.name = 'knowin-command'
+
+include 'app'

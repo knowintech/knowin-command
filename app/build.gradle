@@ -1,0 +1,30 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'com.github.johnrengelman.shadow' version '2.0.4'
+}
+
+sourceCompatibility = 1.8
+mainClassName = 'com.knowin.iot.command.Command'
+
+dependencies {
+    compile "io.vertx:vertx-core:${VertxVersion}"
+    compile "org.slf4j:slf4j-api:${Slf4jVersion}"
+    compile "ch.qos.logback:logback-classic:${LogbackVersion}"
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': mainClassName
+    }
+}
+
+shadowJar {
+    classifier = 'fat'
+    manifest {
+        attributes 'Main-Class': mainClassName
+    }
+    mergeServiceFiles {
+        include 'META-INF/services/io.vertx.core.spi.VerticleFactory'
+    }
+}

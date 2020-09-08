@@ -1,0 +1,32 @@
+apply plugin: 'maven-publish'
+
+def isReleaseBuild() {
+    return version.endsWith("SNAPSHOT") == false
+}
+
+def getRepository() {
+    if (isReleaseBuild()) {
+        return rootProject.repositories.findByName('release-mvn')
+    } else {
+        return rootProject.repositories.findByName('snapshot-mvn')
+    }
+}
+
+publishing {
+    publications {
+        publishProject(MavenPublication){
+            from components.java
+        }
+    }
+
+    repositories {
+        maven {
+            def repo = getRepository()
+            url repo.url
+            credentials {
+                username repo.credentials.username
+                password repo.credentials.password
+            }
+        }
+    }
+}
